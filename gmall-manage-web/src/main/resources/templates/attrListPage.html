@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--通过<table>标签创建DataGrid控件。在表格内使用<th>标签定义列-->
+<table id="attrListDatagrid" class="easyui-datagrid" style="width:100%;height:100%"
+       data-options="url:'',title:'平台属性列表',method:'get',fitColumns:true,singleSelect:true,toolbar:'#attrTb'">
+    <thead>
+    <tr>
+        <!--        field 需要和bean里面的字段名一样-->
+        <th data-options="field:'id',width:100">属性id</th>
+        <th data-options="field:'attrName',width:300">属性名称</th>
+    </tr>
+    </thead>
+</table>
+<div id="attrTb">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addAttrInfo()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+    <br>
+    <!--    url接口路径获取json数据，valueFeld：id textFeld: 显示的数据 需要对应bean的字段   -->
+    <!--  onSelect 在用户选择列表项的时候触发 rec：可以取到值 clear：清空列表 url：调用接口 只有选中的时候才会调用到个方法onSelect-->
+    一级分类：<input id="catalog1ForAttrList" class="easyui-combobox" name="catalog1"
+                data-options="valueField:'id',textField:'name',url:'catalog1List',method:'get' ,
+            onSelect:function(rec){
+            $('#catalog2ForAttrList').combobox('clear');
+            $('#catalog2ForAttrList').combobox({'url':'catalog2List?catalog1Id='+rec.id});
+            }"/>
+    二级分类：<input id="catalog2ForAttrList" class="easyui-combobox" name="catalog2"
+                data-options="valueField:'id',textField:'name',url:'',method:'get',
+            onSelect:function(rec){
+            $('#catalog3ForAttrList').combobox('clear');
+            $('#catalog3ForAttrList').combobox({'url':'catalog3List?catalog2Id='+rec.id});
+            }"/>
+    三级分类：<input id="catalog3ForAttrList" class="easyui-combobox" name="catalog3"
+                data-options="valueField:'id',textField:'name',method:'GET',url:'',
+            onSelect:function(rec){
+               $('#attrListDatagrid').datagrid({'url':'attrList?catalog3Id='+ rec.id});
+            }"/>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="javascript:reloadAttrList()">刷新属性列表</a>
+</div>
+
+<div id="attrInfoDlg" class="easyui-dialog" title="平台属性编辑" style="width:600px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,buttons:'#attrBtn'">
+    <br>
+    <!--    文本框 -->
+    平台属性名称：<input id="attrName" class="easyui-textbox" data-options="iconCls:'icon-search'" style="width:300px">
+    <br><br>
+    <!--    数据网格 -->
+    <table id="attrValueListDatagrid" class="easyui-datagrid" style="width:100%;height:100%"
+           data-options="url:'',title:'平台属性值列表',method:'get',fitColumns:true,singleSelect:true">
+    </table>
+</div>
+</div>
+<div id="attrBtn">
+    <a href="#" class="easyui-linkbutton" onclick="saveAttrInfo()" >保存</a>
+    <a href="#" class="easyui-linkbutton" onclick="closeAttrInfo()">关闭</a>
+</div>
+</body>
+<script>
+    function addAttrInfo() {
+        $('#attrInfoDlg').dialog('open');
+        //清空
+        $('#attrName').textbox('clear')
+        initAttrValueDatagrid();
+    }
+
+    function initAttrValueDatagrid() {
+        //通过js的方式进行添加
+        //清空
+        $('#attrValueListDatagrid').datagrid('loadData', { total: 0 ,rows: [] });
+        var dg = $('#attrValueListDatagrid').datagrid({
+            url: '',
+            columns: [[
+                {field: 'id', title: '编号', width: 100},
+                {
+                    field: 'valueName', title: '属性值名称', width: 100,
+                    //属性值名称进行编辑状态
+                    editor: {
+                        type: 'validatebox', options: {required: true}  //必填项
+                    }
+                }
+            ]],
+            toolbar: [{
+                text: '添加',
+                iconCls: 'icon-add',
+                handler: function () {
+                    //appendRow 追加一个新行。新行将被添加到最后的位置。
+                    dg.datagrid('appendRow', {
+                        id: '',
+                        valueName: ''
+                    });
+                }
+            }, {
+                text: '删除',
+                iconCls: 'icon-remove',
+                handler: function () {
+                    // getSelected 返回第一个被选中的行或如果没有选中的行则返回null
+                    var row = dg.datagrid('getSelected');
+                    //getRowIndex  返回指定行的索引号，该行的参数可以是一行记录或一个ID字段值
+                    var rowIndex = dg.datagrid('getRowIndex', row);
+                    //删除选中的一行
+                    dg.datalist('deleteRow', rowIndex)
+                }
+            }],
+            //在用户双击一行的时候触发，参数包括：index：点击的行的索引值，该索引值从0开始。row：对应于点击行的记录。
+            onDblClickRow: function (index,row) {
+                $(this).datagrid('beginEdit', index);
+                var valueName = row.valueName;
+                $("input.datagrid-editable-input").val(valueName).bind("blur", function (evt) {
+                    dg.datagrid('endEdit', index);
+                });
+            }
+        });
+    }
+    function saveAttrInfo() {
+        var attrInfoJson = {};
+        attrInfoJson['attrName'] = $('#attrName').textbox('getValue');
+        var catalog3Id = $('#catalog3ForAttrList').combobox('getValue');
+        attrInfoJson['catalog3Id'] = catalog3Id;
+        var rows = $('#attrValueListDatagrid').datagrid('getRows');
+        for (i=0;i<rows.length;i++){
+            var valueName = rows[i].valueName;
+            attrInfoJson['attrValueList['+i+'].valueName']=valueName;
+        }
+        var a  = JSON.stringify(attrInfoJson);
+        console.log(a);
+        $.post('saveAttrInfo',attrInfoJson,function (data) {
+            $('#attrInfoDlg').dialog('close')
+            //刷新列表
+            $('#attrListDatagrid').datagrid({'reload':'attrList?catalog3Id=' + catalog3Id});
+        })
+    }
+    function closeAttrInfo() {
+        $('#attrInfoDlg').dialog('close')
+    }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
