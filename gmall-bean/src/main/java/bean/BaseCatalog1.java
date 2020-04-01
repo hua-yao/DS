@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author: HuaYao
  * @create: 2020-01-06 21:56
  **/
+@Data
 public class BaseCatalog1 implements Serializable {
     @Id
     @Column

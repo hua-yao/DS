@@ -1,10 +1,11 @@
 package huayao.com.gmallmanageservice.mapper;
 
-import bean.BaseCatalog3;
+import bean.BaseSaleAttr;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
+ * 销售属性
  * @author huayao
  */
-public interface BaseCatalog3Mapper extends Mapper<BaseCatalog3> {
+public interface BaseSaleAttrMapper extends Mapper<BaseSaleAttr> {
 }

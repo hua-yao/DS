@@ -3,10 +3,12 @@ package huayao.com.gmallmanageweb.controller;
 import bean.BaseCatalog1;
 import bean.BaseCatalog2;
 import bean.BaseCatalog3;
+import bean.BaseSaleAttr;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.ManageService;
@@ -57,4 +59,53 @@ public class ManageController {
         String jsonCatalog2List = JSON.toJSONString(catalog3List);
         return jsonCatalog2List;
     }
+
+    @GetMapping("baseSaleAttrList")
+    @ResponseBody
+    public List<BaseSaleAttr> getBaseSaleAttr(){
+        List<BaseSaleAttr> baseSaleAttrList = manageService.getBaseSaleAttrList();
+        return baseSaleAttrList;
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

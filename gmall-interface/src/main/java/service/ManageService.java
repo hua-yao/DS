@@ -47,4 +47,10 @@ public interface ManageService {
      * @return
      */
     public List<SpuInfo> getSpuList(String catalog3Id);
+
+    /**
+     *
+     * @return
+     */
+    public List<BaseSaleAttr> getBaseSaleAttrList();
 }

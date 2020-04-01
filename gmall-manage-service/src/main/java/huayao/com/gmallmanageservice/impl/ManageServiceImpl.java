@@ -22,17 +22,19 @@ public class ManageServiceImpl implements ManageService {
     private BaseAttrInfoMapper baseAttrInfoMapper;
     private BaseAttrValueMapper baseAttrValueMapper;
     private SpuInfoMapper spuInfoMapper;
-
+    private BaseSaleAttrMapper baseSaleAttrMapper;
 
     @Autowired
-    public ManageServiceImpl(BaseCatalog1Mapper baseCatalog1Mapper, BaseCatalog2Mapper baseCatalog2Mapper, BaseCatalog3Mapper baseCatalog3Mapper, BaseAttrInfoMapper baseAttrInfoMapper, BaseAttrValueMapper baseAttrValueMapper, SpuInfoMapper spuInfoMapper) {
+    public ManageServiceImpl(BaseCatalog1Mapper baseCatalog1Mapper, BaseCatalog2Mapper baseCatalog2Mapper, BaseCatalog3Mapper baseCatalog3Mapper, BaseAttrInfoMapper baseAttrInfoMapper, BaseAttrValueMapper baseAttrValueMapper, SpuInfoMapper spuInfoMapper, BaseSaleAttrMapper baseSaleAttrMapper) {
         this.baseCatalog1Mapper = baseCatalog1Mapper;
         this.baseCatalog2Mapper = baseCatalog2Mapper;
         this.baseCatalog3Mapper = baseCatalog3Mapper;
         this.baseAttrInfoMapper = baseAttrInfoMapper;
         this.baseAttrValueMapper = baseAttrValueMapper;
         this.spuInfoMapper = spuInfoMapper;
+        this.baseSaleAttrMapper = baseSaleAttrMapper;
     }
+
 
     /**
      * 获取一级分类
@@ -99,6 +101,12 @@ public class ManageServiceImpl implements ManageService {
         spuInfo.setCatalog3Id(catalog3Id);
         List<SpuInfo> select = spuInfoMapper.select(spuInfo);
         return select;
+    }
+
+    @Override
+    public List<BaseSaleAttr> getBaseSaleAttrList(){
+        List baseSaleAttrList = baseSaleAttrMapper.selectAll();
+        return baseSaleAttrList;
     }
 }
 

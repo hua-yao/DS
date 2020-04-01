@@ -23,36 +23,4 @@ public class spuSaleAttrValue implements Serializable {
      */
     @Column
     private String saleAttrValueName;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSpuId() {
-        return spuId;
-    }
-
-    public void setSpuId(Long spuId) {
-        this.spuId = spuId;
-    }
-
-    public String getSaleAttrId() {
-        return saleAttrId;
-    }
-
-    public void setSaleAttrId(String saleAttrId) {
-        this.saleAttrId = saleAttrId;
-    }
-
-    public String getSaleAttrValueName() {
-        return saleAttrValueName;
-    }
-
-    public void setSaleAttrValueName(String saleAttrValueName) {
-        this.saleAttrValueName = saleAttrValueName;
-    }
 }

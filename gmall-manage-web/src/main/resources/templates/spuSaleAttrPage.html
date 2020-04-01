@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,17 +7,22 @@
 <!-- 可以不要body -->
 <!-- 需要一个弹出框 -->
 <!-- resizable:true ：可拉缩  modal:true：模态框-->
-<div id="spuSaleAttrDlg" class="easyui-dialog" title="销售属性" style="width:500px;height:400px;"
+<div id="spuSaleAttrDlg" class="easyui-dialog" title="销售属性" style="width:400px;height:400px;"
      data-options="iconCls:'icon-save',resizable:true,closed:true,buttons:'#saleAttrBtn',modal:true">
 <!--    下拉菜单 -->
-     销售属性:  <select id="saleAttrValueDlg" class="easyui-combobox" name="dept" style="width:200px;"
-             data-options="valueField:'id',textField:'name',url:'/baseSaleAttrList'">
+     销售属性:  <select id="saleAttrValueSelect" class="easyui-combobox" name="dept" style="width:200px;"
+             data-options="valueField:'id',textField:'name',url:'baseSaleAttrList',method:'get'">
     </select>
     <br/>
     <br/>
-    <table class="easyui-datagrid" style="width:400px;height:250px"
-           data-options="url:'datagrid_data.json',fitColumns:true,singleSelect:true">
+    <table id="saleAttrValueDg" title="销售属性值列表" class="easyui-datagrid" style="width:400px;height:250px"
+           data-options="fitColumns:true,singleSelect:true,toolbar:'#saleAttrValue_tb'">
     </table>
+
+    <div id="saleAttrValue_tb">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加销售属性</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除销售属性</a>
+    </div>
 </div>
 <div id="saleAttrBtn">
     <a href="#" class="easyui-linkbutton">保存</a>
@@ -26,18 +31,14 @@
 <script>
     function initSpuSaleAttrDlg() {
         $("#spuSaleAttrDlg").dialog("open");
-
-        initSpuSaleAttrValue();
+        initSpuSaleAttrValueDg();
     }
-    function initSpuSaleAttrValue() {
-        var saleAttrValueDg = $("#saleAttrValueDlg").datagrid("load",{
-
-        })
-        saleAttrValueDg.datagrid()({
+    function initSpuSaleAttrValueDg() {
+        var saleAttrValueDg = $("#saleAttrValueDg").datagrid("load",{});
+        saleAttrValueDg.datagrid({
             columns:[[
-                {field:'code',title:'代码',width:100},
-                {field:'name',title:'名称',width:100},
-                {field:'price',title:'价格',width:100,align:'right'}
+                {field:'id',title:'销售属性id',width:'30%'},
+                {field:'saleAttrName',title:'销售属性名称',width:'70%'},
             ]]
         })
     }
