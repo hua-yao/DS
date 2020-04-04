@@ -47,7 +47,7 @@
     <a href="#" class="easyui-linkbutton">保存</a>
     <a href="#" class="easyui-linkbutton">关闭</a>
 </div>
-<div th:include = "spuSaleAttrPage"></div>
+<div th:include="spuSaleAttrPage"></div>
 </body>
 <script>
     function addSpuInfo() {
@@ -87,17 +87,19 @@
             view: detailview,
             detailFormatter: function (rowIndex, rowData) {
                 //html代码
-                var htmlImg = "<img src='"+rowData.imgUrl+"'  style='width:100px; height:100px'/>";
+                var htmlImg = "<img src='" + rowData.imgUrl + "'  style='width:100px; height:100px'/>";
                 console.log('rowData.imgUrl=' + htmlImg)
                 return htmlImg;
             }
         });
         $('#spuSaleAttrDg').datagrid('loadData', {total: 0, rows: []});
         $('#spuSaleAttrDg').datagrid({
+            //定义唯一的id
+            idField:'saleAttrId',
             columns: [[
                 {field: 'saleAttrId', title: '销售属性id', width: '20%'},
                 {field: 'saleAttrName', title: '销售属性名称', width: '20%'},
-                {field: 'saleAttrValueList', title: '', width: '20%',align:'right',hidden:false}
+                {field: 'saleAttrValueList', title: '', width: '20%', align: 'right', hidden: false}
             ]]
         })
     }
@@ -177,7 +179,7 @@
     }
 
     function initSpuSaleAttrListDatagrid(spuInfo) {
-       var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("load",{saleAttrId:'',saleAttrName:''})
+        var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("load", {saleAttrId: '', saleAttrName: ''})
         spuSaleAttrDg.datagrid()
     }
 
@@ -185,6 +187,11 @@
         initSpuSaleAttrDlg();
     }
 
+    function editSpuSaleAttr() {
+        //getSelected 返回第一个被选中的行或如果没有选中的行则返回null
+        var saleAttr  = $('#spuSaleAttrDg').datagrid("getSelected");
+        initSpuSaleAttrDlg(saleAttr);
+    }
 
 </script>
 </html>
