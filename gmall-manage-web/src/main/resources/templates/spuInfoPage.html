@@ -44,7 +44,7 @@
     </div>
 </div>
 <div id="spuBtn">
-    <a href="#" class="easyui-linkbutton">保存</a>
+    <a href="#" class="easyui-linkbutton" onclick="spuSave()">保存</a>
     <a href="#" class="easyui-linkbutton">关闭</a>
 </div>
 <div th:include="spuSaleAttrPage"></div>
@@ -193,6 +193,39 @@
         initSpuSaleAttrDlg(saleAttr);
     }
 
+    //保存spu到数据库
+    function spuSave() {
+        //组合json,按照bean的结构
+        var spuInfoJson ={};
+        spuInfoJson["id"]=$("spuId").val();
+        spuInfoJson["spuName"]=$("spuName").val();
+        spuInfoJson["description"]=$("description").val();
+        //getValue:获取组件的值
+        spuInfoJson["catalog3Id"]=$("#catalog3ForSpuList").combobox('getValue');
+        //得到图片的所以行   getRows:返回当前页的所有行。
+        var imgRows = $("#spuImgDg").datagrid("getRows");
+        for (i = 0; i>imgRows.length;i++){
+            spuInfoJson["spuImageList[" + i + "].imgName"] = imgRows[i].imgName;
+            spuInfoJson["spuImageList[" + i + "].imgUrl"] = imgRows[i].imgUrl;
+        }
+        //得到销售属性的所有行
+        var spuSaleAttrRows = $("#spuSaleAttrDg").datagrid("getRows");
+        for (i = 0; i>spuSaleAttrRows.length;i++){
+            spuInfoJson["spuSaleAttrList[" + i + "].saleAttrId"] = imgRows[i].saleAttrId;
+            spuInfoJson["spuSaleAttrList[" + i + "].saleAttrName"] = imgRows[i].saleAttrName;
+            var valueRows = spuSaleAttrRows[i].saleAttrValueList.rows;
+            for (j = 0; j < valueRows.length; j++){
+                spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
+                spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrValueName"] = spuSaleAttrRows[j].saleAttrId;
+            }
+        }
+        console.log("要保存的值"+JSON.stringify(spuInfoJson));
+
+        //没有提交页面，用异步提交
+        $.port('saveSpuInfo',spuInfoJson,function () {
+
+        })
+    }
 </script>
 </html>
 

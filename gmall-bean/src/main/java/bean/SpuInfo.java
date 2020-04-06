@@ -2,9 +2,9 @@ package bean;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @program: dainShangDemo
@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class SpuInfo implements Serializable {
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     @Column
     private String spuName;
@@ -23,4 +24,14 @@ public class SpuInfo implements Serializable {
     private String description;
     @Column
     private  String catalog3Id;
+    /**
+     * 保存spu销售属性值
+     */
+    @Transient
+    private List<SpuSaleAttr> spuSaleAttrList;
+    /**
+     * 保存spu图片
+     */
+    @Transient
+    private List<SpuImage> spuImageList;
 }

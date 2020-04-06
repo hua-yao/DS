@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-public class spuSaleAttrValue implements Serializable {
+public class SpuSaleAttrValue implements Serializable {
     @Id
     @Column
     private Long id;

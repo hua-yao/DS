@@ -1,24 +1,31 @@
 package bean;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * spu销售属性值
+ * @author huayao
  */
+@Data
 public class SpuSaleAttr implements Serializable {
-    //id
     @Id
     @Column
     private Long id;
-    //商品id
     @Column
     private Long spuId;
-    //销售属性id
     @Column
     private String saleAttrId;
-    //销售属性名称
     @Column
     private String saleAttrName;
+    @Transient
+    List<SpuSaleAttrValue> spuSaleAttrValueList;
+    @Transient
+    Map spuSaleAtrValueJson;
 }
