@@ -41,7 +41,7 @@
             columns: [[
                 {field: 'id', title: '销售属性id', width: '30%'},
                 {
-                    field: 'saleAttrName', title: '销售属性名称', width: '70%',
+                    field: 'saleAttrValueName', title: '销售属性名称', width: '70%',
                     editor: {
                         type: 'validatebox', options: 'required:true'
                     }
@@ -83,10 +83,10 @@
 
     function saveSaleAttrValue() {
         //取值
-        var saleAttrName = $("#saleAttrValueSelect").combobox("getText");
+        var saleAttrValueName = $("#saleAttrValueSelect").combobox("getText");
         var saleAttrId = $("#saleAttrValueSelect").combobox("getValue");
         var dgData = $("#saleAttrValueDg").datagrid("getData");
-        console.log("saleAttrName:" + saleAttrName + "||saleAttrId:" + saleAttrId + "||" + JSON.stringify(dgData));
+        console.log("saleAttrValueName:" + saleAttrValueName + "||saleAttrId:" + saleAttrId + "||" + JSON.stringify(dgData));
         //编辑插入前删除该行
         var saleAttrValueDg = $("#spuSaleAttrDg");
         var index = saleAttrValueDg.datagrid("getRowIndex", saleAttrId);
@@ -98,7 +98,7 @@
         //存值
         saleAttrValueDg.datagrid("appendRow", {
             saleAttrId: saleAttrId,
-            saleAttrName: saleAttrName,
+            saleAttrName: saleAttrValueName,
             saleAttrValueList: dgData
         })
         //关闭窗口

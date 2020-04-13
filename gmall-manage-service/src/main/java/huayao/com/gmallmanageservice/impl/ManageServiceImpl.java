@@ -23,9 +23,14 @@ public class ManageServiceImpl implements ManageService {
     private BaseAttrValueMapper baseAttrValueMapper;
     private SpuInfoMapper spuInfoMapper;
     private BaseSaleAttrMapper baseSaleAttrMapper;
+    private SpuImageMapper spuImageMapper;
+    @Autowired
+    private SpuSaleAttrMapper spuSaleAttrMapper;
+    @Autowired
+    private SpuSaleAttrValueMapper spuSaleAttrValueMapper;
 
     @Autowired
-    public ManageServiceImpl(BaseCatalog1Mapper baseCatalog1Mapper, BaseCatalog2Mapper baseCatalog2Mapper, BaseCatalog3Mapper baseCatalog3Mapper, BaseAttrInfoMapper baseAttrInfoMapper, BaseAttrValueMapper baseAttrValueMapper, SpuInfoMapper spuInfoMapper, BaseSaleAttrMapper baseSaleAttrMapper) {
+    public ManageServiceImpl(BaseCatalog1Mapper baseCatalog1Mapper, BaseCatalog2Mapper baseCatalog2Mapper, BaseCatalog3Mapper baseCatalog3Mapper, BaseAttrInfoMapper baseAttrInfoMapper, BaseAttrValueMapper baseAttrValueMapper, SpuInfoMapper spuInfoMapper, BaseSaleAttrMapper baseSaleAttrMapper, SpuImageMapper spuImageMapper) {
         this.baseCatalog1Mapper = baseCatalog1Mapper;
         this.baseCatalog2Mapper = baseCatalog2Mapper;
         this.baseCatalog3Mapper = baseCatalog3Mapper;
@@ -33,8 +38,8 @@ public class ManageServiceImpl implements ManageService {
         this.baseAttrValueMapper = baseAttrValueMapper;
         this.spuInfoMapper = spuInfoMapper;
         this.baseSaleAttrMapper = baseSaleAttrMapper;
+        this.spuImageMapper = spuImageMapper;
     }
-
 
     /**
      * 获取一级分类
@@ -107,6 +112,32 @@ public class ManageServiceImpl implements ManageService {
     public List<BaseSaleAttr> getBaseSaleAttrList(){
         List baseSaleAttrList = baseSaleAttrMapper.selectAll();
         return baseSaleAttrList;
+    }
+
+    @Override
+    public void saveSpuInfo(SpuInfo spuInfo){
+        //判断空键
+        if (spuInfo.getId()!=null&&spuInfo.getId().length()==0){
+            spuInfo.setId(null);
+        }
+        spuInfoMapper.insertSelective(spuInfo);
+        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
+        for (SpuImage spuImage : spuImageList) {
+            String id = spuInfo.getId();
+            spuImage.setSpuId(id);
+            spuImageMapper.insertSelective(spuImage);
+        }
+        //执行删除，在保存
+        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
+        for (SpuSaleAttr spuSaleAttr : spuSaleAttrList) {
+            spuSaleAttr.setSpuId(spuInfo.getId());
+            spuSaleAttrMapper.insertSelective(spuSaleAttr);
+            List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
+            for (SpuSaleAttrValue spuSaleAttrValue : spuSaleAttrValueList) {
+                spuSaleAttrValue.setSpuId(spuInfo.getId());
+                spuSaleAttrValueMapper.insertSelective(spuSaleAttrValue);
+            }
+        }
     }
 }
 

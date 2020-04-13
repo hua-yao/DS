@@ -98,7 +98,7 @@
             idField:'saleAttrId',
             columns: [[
                 {field: 'saleAttrId', title: '销售属性id', width: '20%'},
-                {field: 'saleAttrName', title: '销售属性名称', width: '20%'},
+                {field: 'saleAttrName', title: '销售属性', width: '20%'},
                 {field: 'saleAttrValueList', title: '', width: '20%', align: 'right', hidden: false}
             ]]
         })
@@ -197,26 +197,26 @@
     function spuSave() {
         //组合json,按照bean的结构
         var spuInfoJson ={};
-        spuInfoJson["id"]=$("spuId").val();
-        spuInfoJson["spuName"]=$("spuName").val();
-        spuInfoJson["description"]=$("description").val();
+        spuInfoJson["id"]=$("#spuId").val();
+        spuInfoJson["spuName"]=$("#spuName").val();
+        spuInfoJson["description"]=$("#description").val();
         //getValue:获取组件的值
         spuInfoJson["catalog3Id"]=$("#catalog3ForSpuList").combobox('getValue');
         //得到图片的所以行   getRows:返回当前页的所有行。
         var imgRows = $("#spuImgDg").datagrid("getRows");
-        for (i = 0; i>imgRows.length;i++){
+        for (i = 0; i<imgRows.length;i++){
             spuInfoJson["spuImageList[" + i + "].imgName"] = imgRows[i].imgName;
             spuInfoJson["spuImageList[" + i + "].imgUrl"] = imgRows[i].imgUrl;
         }
         //得到销售属性的所有行
         var spuSaleAttrRows = $("#spuSaleAttrDg").datagrid("getRows");
-        for (i = 0; i>spuSaleAttrRows.length;i++){
-            spuInfoJson["spuSaleAttrList[" + i + "].saleAttrId"] = imgRows[i].saleAttrId;
-            spuInfoJson["spuSaleAttrList[" + i + "].saleAttrName"] = imgRows[i].saleAttrName;
+        for (i = 0; i<spuSaleAttrRows.length;i++){
+            spuInfoJson["spuSaleAttrList[" + i + "].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
+            spuInfoJson["spuSaleAttrList[" + i + "].saleAttrName"] = spuSaleAttrRows[i].saleAttrName;
             var valueRows = spuSaleAttrRows[i].saleAttrValueList.rows;
             for (j = 0; j < valueRows.length; j++){
                 spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
-                spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrValueName"] = spuSaleAttrRows[j].saleAttrId;
+                spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrValueName"] = valueRows[j].saleAttrValueName;
             }
         }
         console.log("要保存的值"+JSON.stringify(spuInfoJson));

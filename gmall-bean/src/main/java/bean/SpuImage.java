@@ -15,7 +15,7 @@ public class SpuImage {
     @Column
     private Long id;
     @Column
-    private Long spuId;
+    private String spuId;
     @Column
     private String imgName;
     @Column

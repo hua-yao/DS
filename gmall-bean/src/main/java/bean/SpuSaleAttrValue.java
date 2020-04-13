@@ -1,9 +1,15 @@
 package bean;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+/**
+ * @author huayao
+ */
+@Data
 public class SpuSaleAttrValue implements Serializable {
     @Id
     @Column
@@ -12,7 +18,7 @@ public class SpuSaleAttrValue implements Serializable {
      * 商品id
      */
     @Column
-    private Long spuId;
+    private String spuId;
     /**
      * 销售属性id
      */

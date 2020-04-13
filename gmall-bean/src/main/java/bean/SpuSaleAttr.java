@@ -19,7 +19,7 @@ public class SpuSaleAttr implements Serializable {
     @Column
     private Long id;
     @Column
-    private Long spuId;
+    private String spuId;
     @Column
     private String saleAttrId;
     @Column
