@@ -222,8 +222,8 @@
         console.log("要保存的值"+JSON.stringify(spuInfoJson));
 
         //没有提交页面，用异步提交
-        $.port('saveSpuInfo',spuInfoJson,function () {
-
+        //ajax 保存到后台
+        $.post('saveSpuInfo',spuInfoJson,function () {
         })
     }
 </script>
