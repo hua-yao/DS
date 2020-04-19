@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huayao.com.gmallmanageservice.mapper.BaseAttrInfoMapper">
+    <select id="selectAttrInfoList" resultMap="attrInfoMap">
+         SELECT
+	     ba.id,
+	     ba.attr_name,
+	     ba.catalog3_id,
+	     bv.id value_id,
+	     bv.attr_id,
+	     bv.value_name
+         FROM
+	     base_attr_info ba
+         INNER JOIN base_attr_value bv ON ba.id = bv.attr_id
+         WHERE ba.catalog3_id=#{catalog3Id}
+    </select>
+<!--    autoMapping 字段和属性变量一样的可以自动装配-->
+    <resultMap id="attrInfoMap" type="bean.BaseAttrInfo" autoMapping="true">
+        <result property="id" column="id"></result>
+<!--     collection 装配另一个类   -->
+        <collection property="attrValueList" ofType="bean.BaseAttrValue">
+            <result property="id" column="value_id"></result>
+        </collection>
+    </resultMap>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

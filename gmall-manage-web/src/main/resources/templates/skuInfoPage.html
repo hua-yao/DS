@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 弹出框 -->
+<div id="spuInfoDlg" class="easyui-dialog" title="编辑sku" style="width:800px;height:600px;"
+     data-options="iconCls:'icon-save',resizable:true,closed:true,modal:true,buttons:'#skuBtn'">
+
+<!--  表单  -->
+    <form id="skuForm">
+    <label>sku名称:</label>
+        <input id="skuName" name="skuName" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
+        <label>sku价格:</label>
+        <input id="price" name="price" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
+        <label>sku重量:</label>
+        <input id="weight" name="weight" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
+        <label>sku重量:</label>
+        <input id="skuDesc" name="skuDesc" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
+    </form>
+    <!--  平台属性下拉菜单  -->
+    <!--    面板 -->
+    <div id="attrInfoGroup" class="easyui-panel" title="平台属性"
+         style="width:700px;height:150px;padding:10px;background:#fafafa;"
+         data-options="iconCls:'icon-save',closable:false,collapsible:false,minimizable:false,maximizable:false">
+    </div>
+    <!--  销售属性下拉菜单  -->
+    <div id="saleAttrGroup" class="easyui-panel" title="销售属性"
+         style="width:700px;height:150px;padding:10px;background:#fafafa;"
+         data-options="iconCls:'icon-save',closable:false,collapsible:false,minimizable:false,maximizable:false">
+    </div>
+    <!--  图片datagred  -->
+    <table id="suImgDg" class="easyui-datagrid" style="width:100%;height:30%"
+           data-options="url:'',title:'商品图片列表',method:'get',fitColumns:true,singleSelect:true">
+    </table>k
+    <!--  保存按钮  -->
+    <div id="skuBtn">
+        <a href="#" class="easyui-linkbutton" onclick="spuSave()">保存</a>
+        <a href="#" class="easyui-linkbutton">关闭</a>
+    </div>
+</div>
+<script>
+    function initSKuDlg() {
+        initSKuForm();
+        initAttrInfoGroup();
+    }
+    function initSkuForm() {
+        //reset 重置表单
+        $('#skuForm').form("reset")
+    }
+    function initAttrInfoGroup() {
+        //取出三级分类
+        var catalog3Id = $("#catalog3ForSpuList").combobox("getValue");
+        //用三级分类查询出对应的平台属性集合
+        //url
+        //data 里面是后台查询的数据
+        $.get("attrList?catalog3Id="+catalog3Id,function (data) {
+            //把集合展开，组合成多个select
+
+        })
+
+    }
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

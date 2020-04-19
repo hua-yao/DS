@@ -43,20 +43,22 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 获取一级分类
+     *
      * @return 一级分类
      */
     @Override
-    public List<BaseCatalog1> getCatalog1List(){
+    public List<BaseCatalog1> getCatalog1List() {
         List<BaseCatalog1> baseCatalog1s = baseCatalog1Mapper.selectAll();
         return baseCatalog1s;
     }
 
     /**
      * 获取二级分类
+     *
      * @return 二级分类
      */
     @Override
-    public List<BaseCatalog2> getCatalog2List(String catalog1Id){
+    public List<BaseCatalog2> getCatalog2List(String catalog1Id) {
         BaseCatalog2 baseCatalog2 = new BaseCatalog2();
         baseCatalog2.setCatalog1Id(catalog1Id);
         //直接传入对象
@@ -66,10 +68,11 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 获取三级分类
+     *
      * @return 三级分类
      */
     @Override
-    public List<BaseCatalog3> getCatalog3List(String Catalog2Id){
+    public List<BaseCatalog3> getCatalog3List(String Catalog2Id) {
         BaseCatalog3 baseCatalog3 = new BaseCatalog3();
         baseCatalog3.setCatalog2Id(Catalog2Id);
         List<BaseCatalog3> baseCatalog3s = baseCatalog3Mapper.select(baseCatalog3);
@@ -78,11 +81,12 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 获取平台属性
+     *
      * @param catalog3Id 三级分类id
      * @return
      */
     @Override
-    public List<BaseAttrInfo> attList(String catalog3Id){
+    public List<BaseAttrInfo> attList(String catalog3Id) {
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
         List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.select(baseAttrInfo);
@@ -90,7 +94,7 @@ public class ManageServiceImpl implements ManageService {
     }
 
     @Override
-    public void saveAttrInfo(BaseAttrInfo baseAttrInfo){
+    public void saveAttrInfo(BaseAttrInfo baseAttrInfo) {
         baseAttrInfoMapper.insertSelective(baseAttrInfo);
         List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
         for (BaseAttrValue baseAttrValue : attrValueList) {
@@ -101,7 +105,7 @@ public class ManageServiceImpl implements ManageService {
     }
 
     @Override
-    public List<SpuInfo> getSpuList(String catalog3Id){
+    public List<SpuInfo> getSpuList(String catalog3Id) {
         SpuInfo spuInfo = new SpuInfo();
         spuInfo.setCatalog3Id(catalog3Id);
         List<SpuInfo> select = spuInfoMapper.select(spuInfo);
@@ -109,15 +113,15 @@ public class ManageServiceImpl implements ManageService {
     }
 
     @Override
-    public List<BaseSaleAttr> getBaseSaleAttrList(){
+    public List<BaseSaleAttr> getBaseSaleAttrList() {
         List baseSaleAttrList = baseSaleAttrMapper.selectAll();
         return baseSaleAttrList;
     }
 
     @Override
-    public void saveSpuInfo(SpuInfo spuInfo){
+    public void saveSpuInfo(SpuInfo spuInfo) {
         //判断空键
-        if (spuInfo.getId()!=null&&spuInfo.getId().length()==0){
+        if (spuInfo.getId() != null && spuInfo.getId().length() == 0) {
             spuInfo.setId(null);
         }
         spuInfoMapper.insertSelective(spuInfo);
@@ -139,6 +143,14 @@ public class ManageServiceImpl implements ManageService {
             }
         }
     }
+
+    public List<BaseAttrInfo> getAttrInfoList(String catalog3Id) {
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrInfo.setCatalog3Id(catalog3Id);
+        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.selectAttrInfoList(Long.parseLong(catalog3Id));
+        return baseAttrInfos;
+    }
+
 }
 
 

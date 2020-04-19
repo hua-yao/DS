@@ -20,6 +20,7 @@
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="addSpuInfo()">添加</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="addSkuInfo()">增加sku</a>
     <br>
     <!--    url接口路径获取json数据，valueFeld：id textFeld: 显示的数据 需要对应bean的字段   -->
     <!--  onSelect 在用户选择列表项的时候触发 rec：可以取到值 clear：清空列表 url：调用接口 只有选中的时候才会调用到个方法onSelect-->
@@ -43,6 +44,13 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="javascript:reloadAttrList()">刷新属性列表</a>
 </div>
 <div th:include="spuInfoPage"></div>
+<div th:include="skuInfoPage"></div>
+<script>
+    function addSkuInfo() {
+        $('#spu_dlg').dialog('open');
+        initSpuDlg();
+    }
+</script>
 </body>
 </html>
 
