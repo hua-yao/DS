@@ -39,6 +39,14 @@ public class AttrInfoController {
         return baseAttrInfoList;
     }
 
+    @GetMapping("attrListForSku")
+    @ResponseBody
+    public List<BaseAttrInfo> attrListForSku(HttpServletRequest request){
+        String catalog1Id = request.getParameter("catalog3Id");
+        List<BaseAttrInfo> baseAttrInfos = manageService.attList(catalog1Id);
+        return baseAttrInfos;
+    }
+
     @PostMapping("saveAttrInfo")
     @ResponseBody
     public String saveAttrInfo(BaseAttrInfo baseAttrInfo){

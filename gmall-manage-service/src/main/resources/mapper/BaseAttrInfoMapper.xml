@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="huayao.com.gmallmanageservice.mapper.BaseAttrInfoMapper">
-    <select id="selectAttrInfoList" resultMap="attrInfoMap">
+    <select id="selectAttrInfoList"  parameterType="long"  resultMap="attrInfoMap">
          SELECT
 	     ba.id,
 	     ba.attr_name,
 	     ba.catalog3_id,
-	     bv.id value_id,
+	     bv.id as value_id,
 	     bv.attr_id,
 	     bv.value_name
          FROM
@@ -18,10 +18,12 @@
     <resultMap id="attrInfoMap" type="bean.BaseAttrInfo" autoMapping="true">
         <result property="id" column="id"></result>
 <!--     collection 装配另一个类   -->
-        <collection property="attrValueList" ofType="bean.BaseAttrValue">
-            <result property="id" column="value_id"></result>
+        <collection property="attrValueList" ofType="bean.BaseAttrValue" autoMapping="true">
+            <id property="id" column="value_id" />
         </collection>
     </resultMap>
+
+
 </mapper>
 
 

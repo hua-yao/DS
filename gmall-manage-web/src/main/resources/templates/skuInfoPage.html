@@ -6,19 +6,23 @@
 </head>
 <body>
 <!-- 弹出框 -->
-<div id="spuInfoDlg" class="easyui-dialog" title="编辑sku" style="width:800px;height:600px;"
+<div id="skuInfoDlg" class="easyui-dialog" title="编辑sku" style="width:800px;height:600px;"
      data-options="iconCls:'icon-save',resizable:true,closed:true,modal:true,buttons:'#skuBtn'">
 
 <!--  表单  -->
     <form id="skuForm">
-    <label>sku名称:</label>
-        <input id="skuName" name="skuName" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
-        <label>sku价格:</label>
-        <input id="price" name="price" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
-        <label>sku重量:</label>
-        <input id="weight" name="weight" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
-        <label>sku重量:</label>
+    <label>商品名称:</label>
+        <input id="skuName" name="skuName" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:30px"/>
+        <br><br>
+        <label>商品价格:</label>
+        <input id="price" name="price" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:30px"/>
+        <br><br>
+        <label>商品重量(千克):</label>
+        <input id="weight" name="weight" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:30px"/>
+        <br><br>
+        <label>商品规格描述:</label>
         <input id="skuDesc" name="skuDesc" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
+        <br><br>
     </form>
     <!--  平台属性下拉菜单  -->
     <!--    面板 -->
@@ -43,12 +47,12 @@
 </div>
 <script>
     function initSKuDlg() {
-        initSKuForm();
+        initSkuForm();
         initAttrInfoGroup();
     }
     function initSkuForm() {
         //reset 重置表单
-        $('#skuForm').form("reset")
+        $("#skuForm").form("reset")
     }
     function initAttrInfoGroup() {
         //取出三级分类
@@ -56,9 +60,25 @@
         //用三级分类查询出对应的平台属性集合
         //url
         //data 里面是后台查询的数据
-        $.get("attrList?catalog3Id="+catalog3Id,function (data) {
+        $.get("attrListForSku?catalog3Id="+catalog3Id,function (data) {
             //把集合展开，组合成多个select
-
+            console.log(JSON.stringify(data))
+            var attrInfoList = data;
+            for (i=0;i<attrInfoList.length;i++){
+                var attrId = attrInfoList[i].id;
+                var attrName = attrInfoList[i].attrName;
+                var selectHtml = "<lobel>"+attrName+"<label>";
+                selectHtml+="<select attrId='" +attrId+"'>";
+                var attrValueList = attrInfoList[i].attrValueList;
+                for (j=0;j<attrValueList.length;j++){
+                    var valueId = attrValueList[j].id;
+                    var valueName = attrValueList[j].valueName;
+                    var optionHtml="<option value='"+valueId+"'>" + valueName+"</option>";
+                    selectHtml+=optionHtml;
+                }
+                selectHtml+="</select>";
+                console.log(JSON.stringify(selectHtml))
+            }
         })
 
     }

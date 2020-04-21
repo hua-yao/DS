@@ -3,6 +3,8 @@ package bean;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -16,7 +18,8 @@ import java.io.Serializable;
 public class BaseAttrValue implements Serializable {
     @Id
     @Column
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column
     private String valueName;
     @Column

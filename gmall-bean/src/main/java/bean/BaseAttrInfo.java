@@ -23,5 +23,5 @@ public class BaseAttrInfo implements Serializable {
     @Column
     private String catalog3Id;
     @Transient
-    private List<BaseAttrValue> attrValueList;
+    List<BaseAttrValue> attrValueList;
 }

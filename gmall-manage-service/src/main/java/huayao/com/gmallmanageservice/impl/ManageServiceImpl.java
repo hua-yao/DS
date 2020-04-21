@@ -68,7 +68,6 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 获取三级分类
-     *
      * @return 三级分类
      */
     @Override
@@ -81,7 +80,6 @@ public class ManageServiceImpl implements ManageService {
 
     /**
      * 获取平台属性
-     *
      * @param catalog3Id 三级分类id
      * @return
      */
@@ -89,7 +87,7 @@ public class ManageServiceImpl implements ManageService {
     public List<BaseAttrInfo> attList(String catalog3Id) {
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
-        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.select(baseAttrInfo);
+        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.selectAttrInfoList(Long.parseLong(catalog3Id));
         return baseAttrInfos;
     }
 
