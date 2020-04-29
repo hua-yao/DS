@@ -28,6 +28,14 @@ public class ManageServiceImpl implements ManageService {
     private SpuSaleAttrMapper spuSaleAttrMapper;
     @Autowired
     private SpuSaleAttrValueMapper spuSaleAttrValueMapper;
+    @Autowired
+    private SkuInfoMapper skuInfoMapper;
+    @Autowired
+    private SkuImageMapper skuImageMapper;
+    @Autowired
+    private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
+    @Autowired
+    private SkuAttrValueMapper skuAttrValueMapper;
 
     @Autowired
     public ManageServiceImpl(BaseCatalog1Mapper baseCatalog1Mapper, BaseCatalog2Mapper baseCatalog2Mapper, BaseCatalog3Mapper baseCatalog3Mapper, BaseAttrInfoMapper baseAttrInfoMapper, BaseAttrValueMapper baseAttrValueMapper, SpuInfoMapper spuInfoMapper, BaseSaleAttrMapper baseSaleAttrMapper, SpuImageMapper spuImageMapper) {
@@ -41,22 +49,12 @@ public class ManageServiceImpl implements ManageService {
         this.spuImageMapper = spuImageMapper;
     }
 
-    /**
-     * 获取一级分类
-     *
-     * @return 一级分类
-     */
     @Override
     public List<BaseCatalog1> getCatalog1List() {
         List<BaseCatalog1> baseCatalog1s = baseCatalog1Mapper.selectAll();
         return baseCatalog1s;
     }
 
-    /**
-     * 获取二级分类
-     *
-     * @return 二级分类
-     */
     @Override
     public List<BaseCatalog2> getCatalog2List(String catalog1Id) {
         BaseCatalog2 baseCatalog2 = new BaseCatalog2();
@@ -66,10 +64,6 @@ public class ManageServiceImpl implements ManageService {
         return baseCatalog2s;
     }
 
-    /**
-     * 获取三级分类
-     * @return 三级分类
-     */
     @Override
     public List<BaseCatalog3> getCatalog3List(String Catalog2Id) {
         BaseCatalog3 baseCatalog3 = new BaseCatalog3();
@@ -78,11 +72,6 @@ public class ManageServiceImpl implements ManageService {
         return baseCatalog3s;
     }
 
-    /**
-     * 获取平台属性
-     * @param catalog3Id 三级分类id
-     * @return
-     */
     @Override
     public List<BaseAttrInfo> attList(String catalog3Id) {
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
@@ -142,6 +131,7 @@ public class ManageServiceImpl implements ManageService {
         }
     }
 
+    @Override
     public List<BaseAttrInfo> getAttrInfoList(String catalog3Id) {
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
@@ -149,6 +139,42 @@ public class ManageServiceImpl implements ManageService {
         return baseAttrInfos;
     }
 
+    @Override
+    public List<SpuSaleAttr> getSaleAttrList(String spuId){
+        List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectSaleAttrInfoList(Long.parseLong(spuId));
+        return spuSaleAttrList;
+    }
+
+    @Override
+    public List<SpuImage> getSpuImageList(String spuId){
+        SpuImage spuImageQuery = new SpuImage();
+        spuImageQuery.setSpuId(spuId);
+        List<SpuImage> select = spuImageMapper.select(spuImageQuery);
+        return select;
+    }
+
+    @Override
+    public void saveSkuInfo(SkuInfo skuInfo){
+        skuInfoMapper.insertSelective(skuInfo);
+        SkuImage skuImageDel = new SkuImage();
+        skuImageDel.setId(skuInfo.getId());
+        skuImageMapper.delete(skuImageDel);
+        List<SkuImage> skuImageList = skuInfo.getSkuImageList();
+        for (SkuImage skuImage : skuImageList) {
+            skuImage.setSkuId(skuInfo.getId());
+            skuImageMapper.insertSelective(skuImage);
+        }
+        List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
+        for (SkuAttrValue skuAttrValue : skuAttrValueList) {
+            skuAttrValue.setSkuId(skuInfo.getId());
+            skuAttrValueMapper.insertSelective(skuAttrValue);
+        }
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
+        for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
+            skuSaleAttrValue.setSkuId(skuInfo.getId());
+            skuSaleAttrValueMapper.insertSelective(skuSaleAttrValue);
+        }
+    }
 }
 
 

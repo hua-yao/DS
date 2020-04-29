@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huayao.com.gmallmanageservice.mapper.SpuSaleAttrMapper">
+    <select id="selectSaleAttrInfoList"  parameterType="long"  resultMap="attrInfoMap">
+         SELECT
+          sa.id,
+	      sa.spu_id,
+	      sa.sale_attr_id,
+	      sale_attr_name,
+	      sv.id value_id,
+	      sv.spu_id value_spu_id,
+	      sv.sale_attr_id value_sale_attr_id,
+	      sale_attr_value_name
+         FROM
+	      spu_sale_attr sa
+         INNER JOIN spu_sale_attr_value sv ON sa.sale_attr_id = sv.sale_attr_id
+         WHERE
+	      sa.spu_id = #{spuId}
+    </select>
+    <!--    autoMapping 字段和属性变量一样的可以自动装配-->
+    <resultMap id="attrInfoMap" type="bean.SpuSaleAttr" autoMapping="true">
+        <result property="id" column="id"></result>
+        <!--     collection 装配另一个类   -->
+        <collection property="spuSaleAttrValueList" ofType="bean.SpuSaleAttrValue" autoMapping="true">
+            <id property="id" column="value_id" />
+            <id property="spuId" column="value_spu_id" />
+            <id property="saleAttrId" column="value_sale_attr_id" />
+        </collection>
+    </resultMap>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -39,6 +39,11 @@ public class AttrInfoController {
         return baseAttrInfoList;
     }
 
+    /**
+     * 查询平台属性
+     * @param request
+     * @return
+     */
     @GetMapping("attrListForSku")
     @ResponseBody
     public List<BaseAttrInfo> attrListForSku(HttpServletRequest request){

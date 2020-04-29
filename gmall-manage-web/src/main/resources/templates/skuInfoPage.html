@@ -2,26 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
 </head>
 <body>
 <!-- 弹出框 -->
 <div id="skuInfoDlg" class="easyui-dialog" title="编辑sku" style="width:800px;height:600px;"
      data-options="iconCls:'icon-save',resizable:true,closed:true,modal:true,buttons:'#skuBtn'">
 
-<!--  表单  -->
+    <!--  表单  -->
     <form id="skuForm">
-    <label>商品名称:</label>
-        <input id="skuName" name="skuName" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:30px"/>
+        <label>商品名称:</label>
+        <input id="skuName" name="skuName" class="easyui-textbox" data-options="multiline:true"
+               style="width:500px;height:30px"/>
         <br><br>
         <label>商品价格:</label>
-        <input id="price" name="price" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:30px"/>
+        <input id="price" name="price" class="easyui-textbox" data-options="multiline:true"
+               style="width:500px;height:30px"/>
         <br><br>
         <label>商品重量(千克):</label>
-        <input id="weight" name="weight" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:30px"/>
+        <input id="weight" name="weight" class="easyui-textbox" data-options="multiline:true"
+               style="width:500px;height:30px"/>
         <br><br>
         <label>商品规格描述:</label>
-        <input id="skuDesc" name="skuDesc" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:100px"/>
+        <input id="skuDesc" name="skuDesc" class="easyui-textbox" data-options="multiline:true"
+               style="width:500px;height:100px"/>
         <br><br>
     </form>
     <!--  平台属性下拉菜单  -->
@@ -35,61 +38,224 @@
          style="width:700px;height:150px;padding:10px;background:#fafafa;"
          data-options="iconCls:'icon-save',closable:false,collapsible:false,minimizable:false,maximizable:false">
     </div>
-    <!--  图片datagred  -->
-    <table id="suImgDg" class="easyui-datagrid" style="width:100%;height:30%"
-           data-options="url:'',title:'商品图片列表',method:'get',fitColumns:true,singleSelect:true">
-    </table>k
-    <!--  保存按钮  -->
+    <!--  图片datagred   singleSelect :定义单和多 -->
+    <table id="skuImgDg" class="easyui-datagrid"
+           data-options="url:'',title:'商品图片列表',method:'get',fitColumns:false,singleSelect:false">
+    </table>
+
+    <!--  保存钮  -->
     <div id="skuBtn">
-        <a href="#" class="easyui-linkbutton" onclick="spuSave()">保存</a>
+        <a href="#" class="easyui-linkbutton" onclick="saveSkuInfo()">保存</a>
         <a href="#" class="easyui-linkbutton">关闭</a>
     </div>
 </div>
-<script>
+<script >
     function initSKuDlg() {
         initSkuForm();
         initAttrInfoGroup();
+        initSaleAttrGroup();
+        initSkuImageDatagrid();
     }
+    function saveSkuInfo() {
+        var skuInfoJson={};
+        //装配基本行信息
+        skuInfoJson['skuName']=$('#skuName').val();
+        skuInfoJson['price']=$('#price').val();
+        skuInfoJson['weight']=$('#weight').val();
+        skuInfoJson['skuDesc']=$('#skuDesc').val();
+        var selectRow = $("#spuListDatagrid").datagrid("getSelected");
+        var spuId = selectRow.id;
+        skuInfoJson['spuId']=spuId;
+        var catalog3Id = $("#catalog3ForSpuList").combobox("getValue");
+        skuInfoJson['catalog3Id']=catalog3Id;
+
+
+        //装配平台属性
+        var selectList = $("#attrInfoGroup").children("select");
+        for (i=0;i<selectList.length;i++){
+            var select = selectList.eq(i);
+            var attrId = select.attr("attrId");
+            var option = select.find("option");
+            var valueId = option.attr("value");
+            skuInfoJson['skuAttrValueList['+i+'].valueId']=valueId;
+            skuInfoJson['skuAttrValueList['+i+'].attrId']=attrId;
+        }
+
+
+        //装配销售属性
+        var selectList = $("#saleAttrGroup").children("select");
+        var labelList = $("#saleAttrGroup").children("label");
+        console.log("selectList1长度 = "+ selectList.length);
+        for (i=0;i<selectList.length;i++){
+            var select = selectList.eq(i);
+            var saleAttrId = select.attr("attrId");
+            var option = select.find("option");
+            var saleAttrValueId = option.attr("value");
+            var saleAttrValueName = option.eq(i).text();
+
+            var saleAttrName = labelList.eq(i).text();
+            console.log("saleAttrName = "+ saleAttrName);
+
+            skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrId']=saleAttrId;
+            skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrValueId']=saleAttrValueId;
+            skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrValueName']=saleAttrValueName;
+            skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrName']=saleAttrName;
+        }
+        //关闭编辑状态，这样才能把值给保存到这个控件里面
+        var rows = $("#skuImgDg").datagrid('getRows');
+        for (i=0;i<rows.length;i++){
+            $("#skuImgDg").datagrid('endEdit',i);
+        }
+
+        //装配图片
+        //勾中的行 getChecked : 得到勾中的行
+        var rows = $("#skuImgDg").datagrid('getChecked');
+        for (i=0;i<rows.length;i++){
+            var imgUrl = rows[i].imgUrl;
+            var imgName = rows[i].imgName;
+            var spuImgId = rows[i].id;
+            var isDefault = rows[i].isDefault;
+            skuInfoJson['skuImageList['+i+'].imgUrl']=imgUrl;
+            skuInfoJson['skuImageList['+i+'].imgName']=imgName;
+            skuInfoJson['skuImageList['+i+'].spuImgId']=spuImgId;
+            skuInfoJson['skuImageList['+i+'].isDefault']=isDefault;
+            if (isDefault=="1"){
+                skuInfoJson['skuDefaultImg']=imgUrl;
+            }
+        }
+        console.log("保存的SKU值 = " + JSON.stringify(skuInfoJson))
+        //保存数据
+        $.post("saveSku",skuInfoJson, function (data) {
+            $('#skuInfoDlg').dialog("close");
+        })
+    }
+
+
     function initSkuForm() {
         //reset 重置表单
         $("#skuForm").form("reset")
     }
+
     function initAttrInfoGroup() {
-        //取出三级分类
+        //取出级分类
         var catalog3Id = $("#catalog3ForSpuList").combobox("getValue");
-        //用三级分类查询出对应的平台属性集合
+        //用级分类查询出对应的平台属性集合
         //url
         //data 里面是后台查询的数据
-        $.get("attrListForSku?catalog3Id="+catalog3Id,function (data) {
+        $.get("attrListForSku?catalog3Id=" + catalog3Id, function (data) {
             //把集合展开，组合成多个select
-            console.log(JSON.stringify(data))
             var attrInfoList = data;
-            for (i=0;i<attrInfoList.length;i++){
+            for (i = 0; i < attrInfoList.length; i++) {
                 var attrId = attrInfoList[i].id;
                 var attrName = attrInfoList[i].attrName;
-                var selectHtml = "<lobel>"+attrName+"<label>";
-                selectHtml+="<select attrId='" +attrId+"'>";
+                var selectHtml = "<label>" + attrName + "</label>";
+                selectHtml += "<select attrId='" + attrId + "'>";
                 var attrValueList = attrInfoList[i].attrValueList;
-                for (j=0;j<attrValueList.length;j++){
+                for (j = 0; j < attrValueList.length; j++) {
                     var valueId = attrValueList[j].id;
                     var valueName = attrValueList[j].valueName;
-                    var optionHtml="<option value='"+valueId+"'>" + valueName+"</option>";
-                    selectHtml+=optionHtml;
+                    var optionHtml = "<option value='" + valueId + "'>" + valueName + "</option>";
+                    selectHtml += optionHtml;
                 }
-                selectHtml+="</select>";
-                console.log(JSON.stringify(selectHtml))
+                selectHtml += "</select>";
+                /**
+                 * 拼接之后的heml串
+                 * "<lobel>尺寸<label>
+                 <select attrId='303'>
+                 <option value='3309'>4.6寸-5.0寸</option>
+                 <option value='3310'>5.1寸-5.5寸</option>
+                 <option value='3311'>5.6以上</option>
+                 </select>"
+                 */
+
+                //selectHtml 把heml渲染成对象dom加载进去
+                $("#attrInfoGroup").append($(selectHtml));
             }
+
         })
 
+    }
+
+    function initSaleAttrGroup() {
+        //取出spuId   getSelected:中行
+        var selectRow = $("#spuListDatagrid").datagrid("getSelected");
+        var spuId = selectRow.id;
+        $.get("saleAttrListForSku?spuId=" + spuId, function (data) {
+            //把集合展开，组合成多个select
+            var saleAttrInfoList = data;
+            for (i = 0; i < saleAttrInfoList.length; i++) {
+                var saleAttrId = saleAttrInfoList[i].saleAttrId;
+                var saleAttrName = saleAttrInfoList[i].saleAttrName;
+
+                var selectHtml = "<label>" + saleAttrName + "</label>";
+                selectHtml += "<select attrId='" + saleAttrId + "'>";
+                var spuSaleAttrValueList = saleAttrInfoList[i].spuSaleAttrValueList;
+                for (j = 0; j < spuSaleAttrValueList.length; j++) {
+                    var valueId = spuSaleAttrValueList[j].id;
+                    var valueName = spuSaleAttrValueList[j].saleAttrValueName;
+                    var optionHtml = "<option value='" + valueId + "'>" + valueName + "</option>";
+                    selectHtml += optionHtml;
+                }
+                selectHtml += "</select>";
+                //selectHtml 把heml渲染成对象dom加载进去
+                $("#saleAttrGroup").append($(selectHtml));
+            }
+            /**
+             * "<label>颜色<label>
+             <select attrId='9907'>
+             <option value='88813'>磨砂黑</option>
+             <option value='88814'>玫瑰金</option>
+             </select>"
+             */
+
+            /**
+             * "<label>版本<label>
+             <select attrId='9908'>
+             <option value='88815'>4G+32G</option>
+             </select>"
+             */
+
+        })
+    }
+
+    function initSkuImageDatagrid() {
+        var selectedRow = $("#spuListDatagrid").datagrid("getSelected");
+        $("#skuImgDg").datagrid({
+            url:'spuImageList?spuId=' + selectedRow.id,
+            columns:[[
+                { field:'checkFlag',checkbox:true},
+                { field:'id',title:'文件编号',width:'15%'},//隐藏文件页面内部编号
+                { field:'imgName',title:'图片简称',width:'30%'
+                },
+                { field:'imgUrl',title:'图片路径' ,width:'20%',
+                    formatter:function (value, row, index) {
+                        return "<img src="+row.imgUrl+" style='width:100px;height:100px;'>";
+                    }
+                }
+                ,
+                { field:'isDefault',title:'是否默认图片' ,width:'20%',
+                    editor:{type: 'checkbox' ,
+                        options: {
+                            on:"1",
+                            off:"0"
+                        }
+                    }
+                }
+            ]],
+
+            //触发
+            onLoadSuccess:function (data) {
+                var skuImgDg = $("#skuImgDg");
+                var rows = skuImgDg.datagrid('getRows');
+                for (var i = 0; i < rows.length; i++) {
+                    skuImgDg.datagrid('beginEdit', i);
+                }
+            }
+        })
     }
 </script>
 </body>
 </html>
-
-
-
-
-
 
 
 

@@ -3,6 +3,8 @@ package bean;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -14,6 +16,7 @@ import java.io.Serializable;
 public class SkuImage implements Serializable {
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     /**
      * 图片名称
@@ -34,10 +37,37 @@ public class SkuImage implements Serializable {
      * 商品id
      */
     @Column
-    private String skuId ;
+    private Long skuId ;
     /**
      * 商品图片id
      */
     @Column
     private String spuImgId ;
+    /**
+     * 默认图片路径
+     */
+    @Column
+    private String skuDefaultImg;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

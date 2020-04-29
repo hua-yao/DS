@@ -2,15 +2,20 @@ package bean;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
+/**
+ * 库存表
+ * @author huayao
+ */
 @Data
 public class SkuInfo implements Serializable {
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     /**
      * 三级分类id（冗余）
@@ -52,4 +57,32 @@ public class SkuInfo implements Serializable {
      */
     @Column
     private BigDecimal weight ;
+    @Transient
+    List<SkuImage> skuImageList;
+    @Transient
+    List<SkuAttrValue> skuAttrValueList;
+    @Transient
+    List<SkuSaleAttrValue> skuSaleAttrValueList;
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

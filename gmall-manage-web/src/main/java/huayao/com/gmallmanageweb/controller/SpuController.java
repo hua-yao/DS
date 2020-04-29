@@ -1,13 +1,14 @@
 package huayao.com.gmallmanageweb.controller;
 
+import bean.SpuImage;
 import bean.SpuInfo;
+import bean.SpuSaleAttr;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import service.ManageService;
 
@@ -45,6 +46,22 @@ public class SpuController {
     public ResponseEntity<Void> saveSpuInfo(SpuInfo spuInfo){
         manageService.saveSpuInfo(spuInfo);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("saleAttrListForSku")
+    @ResponseBody
+    public List<SpuSaleAttr> getSaleAttrList(HttpServletRequest request ){
+        String spuId = request.getParameter("spuId");
+        List<SpuSaleAttr> saleAttrList = manageService.getSaleAttrList(spuId);
+        return saleAttrList;
+    }
+
+    @GetMapping("spuImageList")
+    @ResponseBody
+    public List<SpuImage> getSpuImageList(HttpServletRequest request ){
+        String spuId = request.getParameter("spuId");
+        List<SpuImage> spuImageList = manageService.getSpuImageList(spuId);
+        return spuImageList;
     }
 }
 
