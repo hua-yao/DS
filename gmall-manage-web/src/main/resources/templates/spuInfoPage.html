@@ -45,7 +45,7 @@
 </div>
 <div id="spuBtn">
     <a href="#" class="easyui-linkbutton" onclick="spuSave()">保存</a>
-    <a href="#" class="easyui-linkbutton">关闭</a>
+    <a href="#" class="easyui-linkbutton" onclick="spuClose()">关闭</a>
 </div>
 <div th:include="spuSaleAttrPage"></div>
 </body>
@@ -92,14 +92,18 @@
                 return htmlImg;
             }
         });
-        $('#spuSaleAttrDg').datagrid('loadData', {total: 0, rows: []});
         $('#spuSaleAttrDg').datagrid({
             //定义唯一的id
             idField:'saleAttrId',
             columns: [[
-                {field: 'saleAttrId', title: '销售属性id', width: '20%'},
+                { field:'id',title:'id',hidden:true },
+                { field:'saleAttrId',title:'销售属性Id',width:'25%'},
+                { field:'saleAttrName',title:'销售属性名称',width:'25%'},
+                { field:'saleAttrValueList',title:'销售属性值暂存', width:'50%'}
+
+   /*             {field: 'saleAttrId', title: '销售属性id', width: '20%'},
                 {field: 'saleAttrName', title: '销售属性', width: '20%'},
-                {field: 'saleAttrValueList', title: '', width: '20%', align: 'right', hidden: false}
+                {field: 'saleAttrValueList', title: '', width: '20%', align: 'right', hidden: false}*/
             ]]
         })
     }
@@ -129,9 +133,7 @@
         });
         //fileQueued 响应事件
         spuImgUploader.on('fileQueued', function (file) {
-            console.log("用户增加文件:" + file.id + '||' + file.name);
             $('#spuImgDg').datagrid('appendRow', {id: file.id, imgName: file.name, process: 0, state: '未上传'});
-            console.log("用户增加:" + file.id + '||' + file.name);
         })
 
 
@@ -179,7 +181,7 @@
     }
 
     function initSpuSaleAttrListDatagrid(spuInfo) {
-        var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("load", {saleAttrId: '', saleAttrName: ''})
+        var spuSaleAttrDg = $("#spuSaleAttrDg").datagrid("load", {saleAttrId: '', saleAttrName: '',saleAttrValueName:''})
         spuSaleAttrDg.datagrid()
     }
 
@@ -210,10 +212,12 @@
         }
         //得到销售属性的所有行
         var spuSaleAttrRows = $("#spuSaleAttrDg").datagrid("getRows");
+        console.log("spuSaleAttrRows=" +JSON.stringify(spuSaleAttrRows));
         for (i = 0; i<spuSaleAttrRows.length;i++){
             spuInfoJson["spuSaleAttrList[" + i + "].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
             spuInfoJson["spuSaleAttrList[" + i + "].saleAttrName"] = spuSaleAttrRows[i].saleAttrName;
             var valueRows = spuSaleAttrRows[i].saleAttrValueList.rows;
+            console.log("valueRows=" +JSON.stringify(valueRows));
             for (j = 0; j < valueRows.length; j++){
                 spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
                 spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrValueName"] = valueRows[j].saleAttrValueName;
@@ -221,10 +225,13 @@
         }
         console.log("要保存的值"+JSON.stringify(spuInfoJson));
 
-        //没有提交页面，用异步提交
         //ajax 保存到后台
         $.post('saveSpuInfo',spuInfoJson,function () {
+            $('#spuInfoDlg').dialog("close");
         })
+    }
+    function spuClose() {
+        $('#spuInfoDlg').dialog("close");
     }
 </script>
 </html>

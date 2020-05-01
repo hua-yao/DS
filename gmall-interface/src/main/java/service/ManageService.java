@@ -75,6 +75,14 @@ public interface ManageService {
     public List<SpuSaleAttr> getSaleAttrList(String spuId);
 
     /**
+     * 从spu中查询属于这个商品的sku,主要是用于标记
+     * @param spuId
+     * @param skuId
+     * @return
+     */
+    public List<SpuSaleAttr> selectSaleAttrInfoListBySku(String spuId,String skuId);
+
+    /**
      * 查询spu图片
      * @param spuId
      * @return
@@ -86,4 +94,18 @@ public interface ManageService {
      * @param skuInfo
      */
     public void saveSkuInfo(SkuInfo skuInfo);
+
+    /**
+     * 查询出skuInfo 和 skuImage数据
+     * @param skuId
+     * @return
+     */
+    public SkuInfo getSKuInfo(Long skuId);
+
+    /**
+     * 根据spuId查询出相同的sku属性值Id进行拼接，动态切换
+     * @param spuId
+     * @return
+     */
+    public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
 }

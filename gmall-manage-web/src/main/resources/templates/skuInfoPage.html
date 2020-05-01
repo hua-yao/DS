@@ -46,7 +46,7 @@
     <!--  保存钮  -->
     <div id="skuBtn">
         <a href="#" class="easyui-linkbutton" onclick="saveSkuInfo()">保存</a>
-        <a href="#" class="easyui-linkbutton">关闭</a>
+        <a href="#" class="easyui-linkbutton" onclick="skuClose()">关闭</a>
     </div>
 </div>
 <script >
@@ -252,6 +252,9 @@
                 }
             }
         })
+    }
+    function skuClose() {
+        $('#skuInfoDlg').dialog("close");
     }
 </script>
 </body>

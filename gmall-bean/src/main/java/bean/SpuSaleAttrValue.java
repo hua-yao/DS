@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -29,4 +30,9 @@ public class SpuSaleAttrValue implements Serializable {
      */
     @Column
     private String saleAttrValueName;
+    /**
+     *
+     */
+    @Transient
+    private String isChecked;
 }

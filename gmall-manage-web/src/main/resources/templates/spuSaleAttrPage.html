@@ -12,9 +12,8 @@
     <!--    下拉菜单 -->
     销售属性: <select id="saleAttrValueSelect" class="easyui-combobox" name="dept" style="width:200px;"
                   data-options="valueField:'id',textField:'name',url:'baseSaleAttrList',method:'get'">
-</select>
-    <br/>
-    <br/>
+             </select>
+    <br/><br/>
     <table id="saleAttrValueDg" title="销售属性值列表" class="easyui-datagrid" style="width:400px;height:250px"
            data-options="fitColumns:true,singleSelect:true,toolbar:'#saleAttrValue_tb'">
     </table>
@@ -32,11 +31,14 @@
 <script>
     function initSpuSaleAttrDlg(saleAttr) {
         $("#spuSaleAttrDlg").dialog("open");
+        //初始化属性选择的下拉菜单
+        $('#saleAttrValueSelect').combobox('reset');
         initSpuSaleAttrValueDg(saleAttr);
     }
 
     function initSpuSaleAttrValueDg(saleAttr) {
-        var saleAttrValueDg = $("#saleAttrValueDg").datagrid("load", {});
+        //初始化
+        var saleAttrValueDg = $('#saleAttrValueDg').datagrid('loadData', { total: 0, rows: [] });
         saleAttrValueDg.datagrid({
             columns: [[
                 {field: 'id', title: '销售属性id', width: '30%'},
@@ -56,6 +58,7 @@
                     saleAttrValueDg.datagrid('endEdit', index);
                 });
             }
+
         })
         //载入值，用于编辑spu销售属性列表
         if (saleAttr) {
@@ -69,8 +72,7 @@
 
     //appendRow 添加行
     function addSaleAttrValue() {
-        var saleAttrValueDg = $("#saleAttrValueDg");
-        saleAttrValueDg.datagrid("appendRow", {id: "", saleAttrValueName: ""})
+        $("#saleAttrValueDg").datagrid("appendRow", {id: "", saleAttrValueName: ""})
     }
 
     //getSelected 得到行  getRowIndex 得到下标  deleteRow 删除行
@@ -83,10 +85,10 @@
 
     function saveSaleAttrValue() {
         //取值
-        var saleAttrValueName = $("#saleAttrValueSelect").combobox("getText");
+        var saleAttrName = $("#saleAttrValueSelect").combobox("getText");
         var saleAttrId = $("#saleAttrValueSelect").combobox("getValue");
         var dgData = $("#saleAttrValueDg").datagrid("getData");
-        console.log("saleAttrValueName:" + saleAttrValueName + "||saleAttrId:" + saleAttrId + "||" + JSON.stringify(dgData));
+        console.log("saleAttrName:" + saleAttrName + "||saleAttrId:" + saleAttrId + "||dgData" + JSON.stringify(dgData));
         //编辑插入前删除该行
         var saleAttrValueDg = $("#spuSaleAttrDg");
         var index = saleAttrValueDg.datagrid("getRowIndex", saleAttrId);
@@ -95,15 +97,19 @@
         if (indexInt>=0) {
             saleAttrValueDg.datagrid("deleteRow", indexInt);
         }
+
+
         //存值
-        saleAttrValueDg.datagrid("appendRow", {
+        $("#spuSaleAttrDg").datagrid("appendRow", {
             saleAttrId: saleAttrId,
-            saleAttrName: saleAttrValueName,
+            saleAttrName: saleAttrName,
             saleAttrValueList: dgData
-        })
+        });
         //关闭窗口
         $("#spuSaleAttrDlg").dialog("close");
+
     }
+
 </script>
 </html>
 

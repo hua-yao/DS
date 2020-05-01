@@ -43,11 +43,6 @@ public class SkuImage implements Serializable {
      */
     @Column
     private String spuImgId ;
-    /**
-     * 默认图片路径
-     */
-    @Column
-    private String skuDefaultImg;
 }
 
 

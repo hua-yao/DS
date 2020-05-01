@@ -146,6 +146,12 @@ public class ManageServiceImpl implements ManageService {
     }
 
     @Override
+    public List<SpuSaleAttr> selectSaleAttrInfoListBySku(String spuId,String skuId){
+        List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectSaleAttrInfoListBySku(Long.parseLong(skuId), Long.parseLong(spuId));
+        return spuSaleAttrList;
+    }
+
+    @Override
     public List<SpuImage> getSpuImageList(String spuId){
         SpuImage spuImageQuery = new SpuImage();
         spuImageQuery.setSpuId(spuId);
@@ -175,7 +181,43 @@ public class ManageServiceImpl implements ManageService {
             skuSaleAttrValueMapper.insertSelective(skuSaleAttrValue);
         }
     }
+
+    @Override
+    public SkuInfo getSKuInfo(Long skuId){
+        //selectByPrimaryKey :按主键查询
+        SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
+        SkuImage skuImage = new SkuImage();
+        skuImage.setSkuId(skuId);
+        List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
+        skuInfo.setSkuImageList(skuImageList);
+        return skuInfo;
+    }
+
+    @Override
+    public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId){
+        List<SkuSaleAttrValue> skuSaleAttrValues = skuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(Long.parseLong(spuId));
+        return skuSaleAttrValues;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
