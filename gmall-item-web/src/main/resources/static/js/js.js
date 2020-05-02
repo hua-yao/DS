@@ -1,5 +1,7 @@
 $(function(){
+	console.log("111111111111");
         //1.楼梯什么时候显示，800px scroll--->scrollTop
+	//123
         $(window).on('scroll',function(){
             var $scroll=$(this).scrollTop();
             if($scroll>=940){
@@ -58,28 +60,38 @@ $(function(){
 
 	
 	    function switchSkuId() {
-		 var valueDivs = $(".redborder div");
-		 var valueIds = "";
-		 for (i=0,i<valueDivs.length;i++;){
-		 	var valueDiv = valueDivs.eq(i);
-			 var valueId = valueDiv.attr("value");
-			 if (valueIds.length>0){
-				 valueIds+="|";
-			 }
-			 valueIds+=valueId;
-		 }
-		var valueIdSkuJson = $("#valueIdSkuIdJson").val();
-		 var valueIdsSkuIdJsonObj = JSON.parse(valueIdSkuJson);
-		 var skuIdTarget = valueIdsSkuIdJsonObj[valueIds];
-		 if (skuIdTarget){
-			var skuIdSelf=$("#skuId").val();
-			if (skuIdTarget!=skuIdSelf){
-				window.location.href="/"+skuIdTarget+".html";
+			console.log("111111111111");
+			var redborderDivs = $(".redborder div");
+			var valueIdkeys="";
+			for(i=0;i<redborderDivs.length;i++){
+				var redborderDiv= redborderDivs.eq(i);
+				var attrValueId = redborderDiv.attr("value");
+				if(i>0){
+					valueIdkeys+="|";
+				}
+				valueIdkeys+=attrValueId;
 			}
-		 }else {
-			 $("#cartBtn").attr("class","box-btns-two-off");
+			console.log("valueIdkeys:"+valueIdkeys);
+			var valueIdSkuJson= $("#valueIdSkuIdJson").val();
+			console.log("valueIdSkuJson:"+valueIdSkuJson);
+			var skuSelfId= $("#skuId").val();
+
+			var valueIdSku = JSON.parse(valueIdSkuJson);
+			var skuIdTarget = valueIdSku[valueIdkeys];
+			if(!skuIdTarget){
+				$("#cartBtn").attr("class","box-btns-two-off");
+				$("#cartBtn").attr("canClick",'0');
+				$("#cartBtn").css("cursor",'not-allowed') ;
+			}else{
+				if(skuSelfId!=skuIdTarget){
+					window.location.href="/"+skuIdTarget+".html";
+				}else{
+					$("#cartBtn").attr("class","box-btns-two");
+					$("#cartBtn").attr("canClick",'1');
+					$("#cartBtn").css("cursor",'pointer') ;
+				}
+			} $("#cartBtn").attr("class","box-btns-two-off");
 		 }
-        }
 
 
 	
@@ -94,6 +106,7 @@ $(function(){
 
        //红边框
 		$(".box-attr-2 dd").click(function() {
+			console.log("111111111111");
 			$(this).addClass("redborder").siblings("dd").removeClass("redborder");
             switchSkuId();
 		})

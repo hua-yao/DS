@@ -77,8 +77,6 @@
             var attrId = select.attr("attrId");
             var option = select.find("option:selected");
             var valueId = option.attr("value");
-            console.log("attrId=" + attrId)
-            console.log("valueId=" + valueId)
             skuInfoJson['skuAttrValueList['+i+'].valueId']=valueId;
             skuInfoJson['skuAttrValueList['+i+'].attrId']=attrId;
         }
@@ -87,7 +85,6 @@
         //装配销售属性
         var selectList = $("#saleAttrGroup").children("select");
         var labelList = $("#saleAttrGroup").children("label");
-        console.log("selectList1长度 = "+ selectList.length);
         for (i = 0;i<selectList.length;i++){
             var select = selectList.eq(i);
             var saleAttrId = select.attr("attrId");
@@ -95,8 +92,6 @@
             var option = select.find("option:selected");
             var saleAttrValueId = option.attr("value");
             var saleAttrValueName = option.text();
-            console.log("saleAttrValueName=" + saleAttrValueName +"  saleAttrValueId="+saleAttrValueId)
-            console.log("i=" + i)
             var saleAttrName = labelList.eq(i).text();
 
             skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrId']=saleAttrId;
