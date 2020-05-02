@@ -100,10 +100,6 @@
                 { field:'saleAttrId',title:'销售属性Id',width:'25%'},
                 { field:'saleAttrName',title:'销售属性名称',width:'25%'},
                 { field:'saleAttrValueList',title:'销售属性值暂存', width:'50%'}
-
-   /*             {field: 'saleAttrId', title: '销售属性id', width: '20%'},
-                {field: 'saleAttrName', title: '销售属性', width: '20%'},
-                {field: 'saleAttrValueList', title: '', width: '20%', align: 'right', hidden: false}*/
             ]]
         })
     }
@@ -212,12 +208,10 @@
         }
         //得到销售属性的所有行
         var spuSaleAttrRows = $("#spuSaleAttrDg").datagrid("getRows");
-        console.log("spuSaleAttrRows=" +JSON.stringify(spuSaleAttrRows));
         for (i = 0; i<spuSaleAttrRows.length;i++){
             spuInfoJson["spuSaleAttrList[" + i + "].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
             spuInfoJson["spuSaleAttrList[" + i + "].saleAttrName"] = spuSaleAttrRows[i].saleAttrName;
             var valueRows = spuSaleAttrRows[i].saleAttrValueList.rows;
-            console.log("valueRows=" +JSON.stringify(valueRows));
             for (j = 0; j < valueRows.length; j++){
                 spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrId"] = spuSaleAttrRows[i].saleAttrId;
                 spuInfoJson["spuSaleAttrList["+i+"].spuSaleAttrValueList["+j+"].saleAttrValueName"] = valueRows[j].saleAttrValueName;

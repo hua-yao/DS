@@ -75,8 +75,10 @@
         for (i=0;i<selectList.length;i++){
             var select = selectList.eq(i);
             var attrId = select.attr("attrId");
-            var option = select.find("option");
+            var option = select.find("option:selected");
             var valueId = option.attr("value");
+            console.log("attrId=" + attrId)
+            console.log("valueId=" + valueId)
             skuInfoJson['skuAttrValueList['+i+'].valueId']=valueId;
             skuInfoJson['skuAttrValueList['+i+'].attrId']=attrId;
         }
@@ -86,15 +88,16 @@
         var selectList = $("#saleAttrGroup").children("select");
         var labelList = $("#saleAttrGroup").children("label");
         console.log("selectList1长度 = "+ selectList.length);
-        for (i=0;i<selectList.length;i++){
+        for (i = 0;i<selectList.length;i++){
             var select = selectList.eq(i);
             var saleAttrId = select.attr("attrId");
-            var option = select.find("option");
+            //selected :得到选中的选项
+            var option = select.find("option:selected");
             var saleAttrValueId = option.attr("value");
-            var saleAttrValueName = option.eq(i).text();
-
+            var saleAttrValueName = option.text();
+            console.log("saleAttrValueName=" + saleAttrValueName +"  saleAttrValueId="+saleAttrValueId)
+            console.log("i=" + i)
             var saleAttrName = labelList.eq(i).text();
-            console.log("saleAttrName = "+ saleAttrName);
 
             skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrId']=saleAttrId;
             skuInfoJson['skuSaleAttrValueList['+i+'].saleAttrValueId']=saleAttrValueId;
@@ -148,9 +151,9 @@
             for (i = 0; i < attrInfoList.length; i++) {
                 var attrId = attrInfoList[i].id;
                 var attrName = attrInfoList[i].attrName;
-                var selectHtml = "<label>" + attrName + "</label>";
+                var selectHtml = "<label>" + attrName + ": </label>";
                 selectHtml += "<select attrId='" + attrId + "'>";
-                var attrValueList = attrInfoList[i].attrValueList;
+                var attrValueList = attrInfoList[i]['attrValueList'];
                 for (j = 0; j < attrValueList.length; j++) {
                     var valueId = attrValueList[j].id;
                     var valueName = attrValueList[j].valueName;
@@ -187,17 +190,18 @@
                 var saleAttrId = saleAttrInfoList[i].saleAttrId;
                 var saleAttrName = saleAttrInfoList[i].saleAttrName;
 
-                var selectHtml = "<label>" + saleAttrName + "</label>";
+                var selectHtml = "<label>" + saleAttrName + ": </label>";
                 selectHtml += "<select attrId='" + saleAttrId + "'>";
-                var spuSaleAttrValueList = saleAttrInfoList[i].spuSaleAttrValueList;
+                var spuSaleAttrValueList = saleAttrInfoList[i]['spuSaleAttrValueList'];
                 for (j = 0; j < spuSaleAttrValueList.length; j++) {
                     var valueId = spuSaleAttrValueList[j].id;
                     var valueName = spuSaleAttrValueList[j].saleAttrValueName;
-                    var optionHtml = "<option value='" + valueId + "'>" + valueName + "</option>";
+                    var optionHtml = '<option value="' + valueId + '">' + valueName+'</option>';
                     selectHtml += optionHtml;
                 }
                 selectHtml += "</select>";
-                //selectHtml 把heml渲染成对象dom加载进去
+                console.log("selectHtml=" + selectHtml)
+                //selectHtml 把html渲染成对象dom加载进去
                 $("#saleAttrGroup").append($(selectHtml));
             }
             /**
