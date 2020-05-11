@@ -1,7 +1,5 @@
 $(function(){
-	console.log("111111111111");
         //1.楼梯什么时候显示，800px scroll--->scrollTop
-	//123
         $(window).on('scroll',function(){
             var $scroll=$(this).scrollTop();
             if($scroll>=940){
