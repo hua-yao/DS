@@ -108,4 +108,10 @@ public interface ManageService {
      * @return
      */
     public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
+
+    /**
+     * 查询出skuInfo和skuAttrValue数据
+     * @param skuId
+     */
+    public void onSale(String skuId);
 }

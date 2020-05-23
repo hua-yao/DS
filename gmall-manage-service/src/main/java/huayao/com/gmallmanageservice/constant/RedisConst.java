@@ -18,5 +18,5 @@ public class RedisConst {
     /**
      * 京东的失效时间是一天
      */
-    public static final int SKU_TIMEOUT=60;
+    public static final int SKU_TIMEOUT=6000;
 }
