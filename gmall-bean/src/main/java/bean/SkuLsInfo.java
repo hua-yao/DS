@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class SkuLsInfo implements Serializable {
 
-    String id;
+    Long id;
 
     BigDecimal price;
 
@@ -17,7 +17,7 @@ public class SkuLsInfo implements Serializable {
 
     String skuDesc;
 
-    String catalog3Id;
+    Long catalog3Id;
 
     String skuDefaultImg;
 
