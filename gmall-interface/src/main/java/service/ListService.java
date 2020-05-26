@@ -4,7 +4,6 @@ import bean.SkuLsInfo;
 import bean.SkuLsParams;
 import bean.SkuLsResult;
 
-import javax.naming.directory.SearchResult;
 
 /**
  * @author huayao
@@ -23,4 +22,10 @@ public interface ListService {
      * @return
      */
     public SkuLsResult search(SkuLsParams skuLsParams);
+
+    /**
+     * 计数器更新热度评分
+     * @param skuId
+     */
+    public void incrHotScore(String skuId);
 }

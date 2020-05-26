@@ -6,10 +6,12 @@ import bean.SpuSaleAttr;
 import bean.SpuSaleAttrValue;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import service.ListService;
 import service.ManageService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ public class ItemController {
 
     @Reference
     ManageService manageService;
+    @Reference
+    ListService listService;
 
     @GetMapping("{skuId}.html")
     public String getItem(@PathVariable("skuId")Long skuId, HttpServletRequest request){
@@ -66,6 +70,7 @@ public class ItemController {
         String valueIdSkuIdJson = JSON.toJSONString(valueIdsSkuIdMap);
         request.setAttribute("valueIdSkuIdJson",valueIdSkuIdJson);
         request.setAttribute("saleAttrList",saleAttrList);
+        listService.incrHotScore(String.valueOf(skuId));
         return "item";
     }
 }

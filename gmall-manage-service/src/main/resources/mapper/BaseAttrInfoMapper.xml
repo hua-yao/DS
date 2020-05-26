@@ -22,7 +22,19 @@
             <id property="id" column="value_id" />
         </collection>
     </resultMap>
-
+    <select id="selectAttrInfoValueId"    resultMap="attrInfoMap">
+         SELECT
+	     ba.id,
+	     ba.attr_name,
+	     ba.catalog3_id,
+	     bv.id as value_id,
+	     bv.attr_id,
+	     bv.value_name
+         FROM
+	     base_attr_info ba
+         INNER JOIN base_attr_value bv ON ba.id = bv.attr_id
+         WHERE bv.id  in (${valueId})
+    </select>
 
 </mapper>
 

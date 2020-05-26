@@ -6,6 +6,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import huayao.com.gmallmanageservice.constant.RedisConst;
 import huayao.com.gmallmanageservice.mapper.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.RedisUtil;
@@ -287,6 +288,14 @@ public class ManageServiceImpl implements ManageService {
         }
         skuLsInfo.setSkuAttrValueList(skuLsAttrValues);
         listService.saveSkuInfoEs(skuLsInfo);
+    }
+
+    @Override
+    public List<BaseAttrInfo> getPropertyValue(List attrInfoValueId){
+        //join 传入值，然后根据逗号进行拼接
+        String ValueId = StringUtils.join(attrInfoValueId, ',');
+        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.selectAttrInfoValueId(ValueId);
+        return baseAttrInfos;
     }
 }
 

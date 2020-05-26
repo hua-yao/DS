@@ -1,6 +1,7 @@
 package huayao.com.gmallmanageservice.mapper;
 
 import bean.BaseAttrInfo;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -13,9 +14,16 @@ import java.util.List;
  **/
 public interface BaseAttrInfoMapper extends Mapper<BaseAttrInfo> {
     /**
-     *
+     *查询平台属性
      * @param catalog3Id
      * @return
      */
     List<BaseAttrInfo> selectAttrInfoList(Long catalog3Id);
+
+    /**
+     * 查询平台属性和平台属性值
+     * @param valueId
+     * @return
+     */
+    List<BaseAttrInfo> selectAttrInfoValueId(@Param("valueId")String valueId);
 }

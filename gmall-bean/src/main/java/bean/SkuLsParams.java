@@ -3,6 +3,8 @@ package bean;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class SkuLsParams implements Serializable {
@@ -31,4 +33,37 @@ public class SkuLsParams implements Serializable {
      * 一页多少表数据
      */
     int pageSize=20;
+
+    List<String> valueIdList = new ArrayList<>();
+
+    public void changeArray2List() {
+        for (int i = 0; i < valueId.length;i++) {
+            String id = valueId[i];
+            valueIdList.add(id);
+        }
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

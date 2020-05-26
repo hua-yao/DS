@@ -114,4 +114,11 @@ public interface ManageService {
      * @param skuId
      */
     public void onSale(String skuId);
+
+    /**
+     * 获取平台属性和平台属性值
+     * @param valueId
+     * @return
+     */
+    public List<BaseAttrInfo> getPropertyValue(List valueId);
 }
