@@ -3,14 +3,12 @@ package com.huayao.gmallitemweb.controller;
 import bean.SkuInfo;
 import bean.SkuSaleAttrValue;
 import bean.SpuSaleAttr;
-import bean.SpuSaleAttrValue;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.huayao.config.LoginRequire;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import service.ListService;
 import service.ManageService;
 
@@ -30,6 +28,7 @@ public class ItemController {
     @Reference
     ListService listService;
 
+    @LoginRequire
     @GetMapping("{skuId}.html")
     public String getItem(@PathVariable("skuId")Long skuId, HttpServletRequest request){
         SkuInfo sKuInfo = manageService.getSKuInfo(skuId);

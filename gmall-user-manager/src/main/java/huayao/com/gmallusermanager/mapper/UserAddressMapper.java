@@ -12,6 +12,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @author: HuaYao
  * @create: 2020-01-02 21:00
  **/
-@Repository
 public interface UserAddressMapper extends Mapper<UserAddress> {
 }

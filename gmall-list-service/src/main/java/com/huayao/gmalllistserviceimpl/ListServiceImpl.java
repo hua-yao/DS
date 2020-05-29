@@ -176,7 +176,6 @@ public class ListServiceImpl implements ListService {
                 "     \"hotScore\":"+hotScore+"\n" +
                 "   }\n" +
                 "}";
-
         Update update = new Update.Builder(updateJson).index("gmall").type("skuInfo").id(skuId).build();
         try {
             jestClient.execute(update);

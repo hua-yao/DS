@@ -13,35 +13,13 @@ import java.util.List;
  * @create: 2020-01-02 17:19
  **/
 public interface UserManageService {
+
     /**
-     *
-     * @param userInfoQuery
+     * 查询数据库保存redis
+     * @param userInfo
      * @return
      */
-    public List<UserInfo> getUserInfoList(UserInfo userInfoQuery);
+    public UserInfo login(UserInfo userInfo);
 
-    /**
-     *
-     * @param userInfoQuery
-     * @return
-     */
-    public UserInfo getUserInfo(UserInfo userInfoQuery);
-
-    /**
-     *
-     * @param userInfoQuery
-     */
-    public void delete(UserInfo userInfoQuery);
-
-    /**
-     *
-     * @param userInfo
-     */
-    public void addUserInfo(UserInfo userInfo);
-
-    /**
-     *
-     * @param userInfo
-     */
-    public void updateUserInfo(UserInfo userInfo);
+    public boolean verify(String userId);
 }

@@ -15,7 +15,7 @@ import redis.clients.jedis.exceptions.JedisAskDataException;
 import service.ListService;
 import service.ManageService;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class ManageServiceImpl implements ManageService {
     private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
     @Autowired
     private SkuAttrValueMapper skuAttrValueMapper;
-    @Autowired()
+    @Autowired
     private RedisUtil redisUtil;
     @Reference
     ListService listService;
